@@ -1,5 +1,10 @@
 plugins {
     id 'java'
+    id 'application'
+}
+
+application {
+    mainClass.set("Application")
 }
 
 group 'com.goncalo2k.hero'
@@ -17,3 +22,4 @@ dependencies {
 test {
     useJUnitPlatform()
 }
+
