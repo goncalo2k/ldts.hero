@@ -15,7 +15,7 @@ public class Game {
     private Hero hero;
     public Game() {
             try {
-                hero = new Hero(10,10);
+                hero = new Hero(new Position(10,10));
                 TerminalSize terminalSize = new TerminalSize(40, 20);
                 DefaultTerminalFactory terminalFactory = new DefaultTerminalFactory().setInitialTerminalSize(terminalSize);
                 Terminal terminal = terminalFactory.createTerminal();
@@ -38,23 +38,27 @@ public class Game {
         }
     }
 
+    //Sets the hero position after the action has been taken
+    private void moveHero(Position position) {
+        hero.setPosition(position);
+    }
+
     private void processKey(KeyStroke key) {
         KeyType pressed = key.getKeyType();
         switch (pressed)
         {
             case ArrowDown:
-                hero.moveDown();
+                moveHero(hero.moveDown());
                 break;
             case ArrowUp:
-                hero.moveUp();
+                moveHero(hero.moveUp());
                 break;
             case ArrowLeft:
-                hero.moveLeft();
+                moveHero(hero.moveLeft());
                 break;
             case ArrowRight:
-                hero.moveRight();
+                moveHero(hero.moveRight());
                 break;
-
         }
     }
 

@@ -4,54 +4,45 @@ import com.googlecode.lanterna.screen.Screen;
 import java.io.IOException;
 
 public class Hero {
-    private int x;
-    private int y;
+
+    private Position position;
 
     //Default Constructor
-    public Hero(int x, int y){
-        this.x = x;
-        this.y = y;
+    public Hero(Position pos){
+        this.position = pos;
+    }
+    //Getter and Setter
+    public Position getPosition() {
+        return position;
     }
 
-    //Getters and Setters
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
+    public void setPosition(Position position) {
+        this.position = position;
     }
 
     //Draws hero on the screen
     public void draw(Screen screen) {
-        screen.setCharacter(this.getX(), this.getY(), TextCharacter.fromCharacter('X')[0]);
+        screen.setCharacter(position.getX(), position.getY(), TextCharacter.fromCharacter('X')[0]);
     }
 
-    //Moves Hero up by 1px.
-    public void moveUp() {
-        this.setY(this.getY()-1);
+    //Returns the Hero's position after moving it down by 1px.
+    public Position moveUp() {
+        return new Position(position.getX(), position.getY()-1);
     }
 
-    //Moves Hero down by 1px.
-    public void moveDown() {
-        this.setY(this.getY()+1);
+    //Returns the Hero's position after moving it up by 1px.
+    public Position moveDown() {
+        return new Position(position.getX(),position.getY()+1);
     }
 
-    //Moves Hero left by 1px.
-    public void moveLeft() {
-        this.setX(this.getX()-1);
+    //Returns the Hero's position after moving it to the left by 1px.
+    public Position moveLeft() {
+        return new Position(position.getX()-1, position.getY());
     }
 
-    //Moves Hero right by 1px.
-    public void moveRight() {
-        this.setX(this.getX()+1);
+    //Returns the Hero's position after moving it to the right by 1px.
+    public Position moveRight() {
+        return new Position(position.getX()+1, position.getY());
     }
 }
+
