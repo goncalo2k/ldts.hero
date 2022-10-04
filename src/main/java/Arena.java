@@ -48,8 +48,8 @@ public class Arena {
     }
 
     public boolean canHeroMove(Position position) {
-        if ((position.getX() <= width || position.getX() >= width) &&
-            (position.getY() <= height || position.getY() >= height)) {
+        if ((position.getX() > 0 && position.getX() < width) &&
+            (position.getY() > 0 && position.getY() < height)) {
             return true;
         }
         else return false;
