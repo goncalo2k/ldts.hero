@@ -25,6 +25,8 @@ public class Hero {
         screen.setCharacter(position.getX(), position.getY(), TextCharacter.fromCharacter('X')[0]);
     }
 
+
+
     //Returns the Hero's position after moving it down by 1px.
     public Position moveUp() {
         return new Position(position.getX(), position.getY()-1);
