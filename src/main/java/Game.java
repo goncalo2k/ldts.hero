@@ -48,8 +48,9 @@ public class Game {
             try {
                 draw();
                 KeyStroke key = screen.readInput();
-                if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q') {
+                if (key.getKeyType() == KeyType.Character && key.getCharacter() == 'q' || arena.gameOver) {
                     screen.close();
+                    break;
                 }
                 else if (key.getKeyType() == KeyType.EOF) {
                     break;

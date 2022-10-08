@@ -4,9 +4,7 @@ import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.input.KeyStroke;
 import com.googlecode.lanterna.input.KeyType;
-import com.googlecode.lanterna.screen.Screen;
 
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -17,6 +15,8 @@ public class Arena {
     private Hero hero;
     private List<Wall> walls;
     private List<Coin> coins;
+    private List<Monster> monsters;
+    public boolean gameOver = false;
 
     public Arena(int x, int y, Hero h) {
         this.width = x;
@@ -24,6 +24,7 @@ public class Arena {
         this.hero = h;
         this.walls = createWalls();
         this.coins = createCoins();
+        this.monsters = createMonsters();
     }
 
     public void draw(TextGraphics graphics) {
@@ -38,6 +39,9 @@ public class Arena {
                 break;
             }
         }
+        for (Monster monster : monsters) {
+            monster.draw(graphics);
+        }
         hero.draw(graphics);
     }
     public void processKey(KeyStroke key) {
@@ -46,32 +50,76 @@ public class Arena {
         {
             case ArrowDown:
                 moveHero(hero.moveDown());
+                moveMonsters();
                 break;
             case ArrowUp:
                 moveHero(hero.moveUp());
+                moveMonsters();
                 break;
             case ArrowLeft:
                 moveHero(hero.moveLeft());
+                moveMonsters();
                 break;
             case ArrowRight:
                 moveHero(hero.moveRight());
+                moveMonsters();
                 break;
         }
+        if (verifyMonsterCollision(hero)) {
+            System.out.print("Game over! Your hero has been slain! :c");
+            gameOver = true;
+        }
+
     }
 
     //Sets the hero position after the action has been taken
-    public void moveHero(Position position) {
-        if (canHeroMove(position))
+    private void moveHero(Position position) {
+        if (canMove(position))
             hero.setPosition(position);
     }
 
-    public boolean canHeroMove(Position position) {
+    private void moveMonsters() {
+        for (Monster monster : monsters)
+        {
+            Position spos = monster.getPosition();
+            Random rand = new Random();
+            int n = rand.nextInt(4);
+            switch (n) {
+                case 0:
+                    monster.setPosition(new Position(monster.getPosition().getX()+1,monster.getPosition().getY()));
+                    break;
+                case 1:
+                    monster.setPosition(new Position(monster.getPosition().getX()-1,monster.getPosition().getY()));
+                    break;
+                case 2:
+                    monster.setPosition(new Position(monster.getPosition().getX(),monster.getPosition().getY()+1));
+                    break;
+                case 3:
+                    monster.setPosition(new Position(monster.getPosition().getX(),monster.getPosition().getY()-1));
+                    break;
+                case 4:
+                    break;
+            }
+            if (!canMove(monster.getPosition()))
+                monster.setPosition(spos);
+        }
+    }
+
+    private boolean canMove(Position position) {
         for (Wall wall: walls) {
             if (wall.getPosition().equals(position)) {
                 return false;
             }
         }
         return true;
+    }
+
+    private boolean verifyMonsterCollision(Hero hero) {
+        for (Monster monster : monsters) {
+            if (hero.getPosition().equals(monster.getPosition()))
+                return true;
+        }
+        return false;
     }
 
     private boolean retrieveCoin(Coin coin) {
@@ -101,5 +149,14 @@ public class Arena {
             coins.add(new Coin(new Position(random.nextInt(width - 2) + 1,
                     random.nextInt(height - 2) + 1)));
         return coins;
+    }
+
+    private List<Monster> createMonsters() {
+        Random random = new Random();
+        List<Monster> monsters = new ArrayList<>();
+        for (int i = 0; i < 5; i++)
+            monsters.add(new Monster(new Position(random.nextInt(width - 2) + 1,
+                    random.nextInt(height - 2) + 1)));
+        return monsters;
     }
 }
