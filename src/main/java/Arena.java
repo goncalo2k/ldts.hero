@@ -82,24 +82,7 @@ public class Arena {
         for (Monster monster : monsters)
         {
             Position spos = monster.getPosition();
-            Random rand = new Random();
-            int n = rand.nextInt(4);
-            switch (n) {
-                case 0:
-                    monster.setPosition(new Position(monster.getPosition().getX()+1,monster.getPosition().getY()));
-                    break;
-                case 1:
-                    monster.setPosition(new Position(monster.getPosition().getX()-1,monster.getPosition().getY()));
-                    break;
-                case 2:
-                    monster.setPosition(new Position(monster.getPosition().getX(),monster.getPosition().getY()+1));
-                    break;
-                case 3:
-                    monster.setPosition(new Position(monster.getPosition().getX(),monster.getPosition().getY()-1));
-                    break;
-                case 4:
-                    break;
-            }
+            monster.setPosition(monster.move());
             if (!canMove(monster.getPosition()))
                 monster.setPosition(spos);
         }
